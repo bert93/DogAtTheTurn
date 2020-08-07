@@ -1,0 +1,37 @@
+<%- include("partials/header"); %>
+
+
+<div class="container-fluid">
+  <h2>Reviews</h2>
+
+    <% reviews.forEach(function(review) { %>
+
+        <h4><%= review.title %> </h4>
+        <p><%= review.date.toDateString()%></p>
+        <div class="container">
+          <div class="review-row row">
+            <div class="review-image-col col-sm">
+                <img src="../<%= review.imageLocation%>" alt="" height="300px" width="350px">
+            </div>
+            <div class="review-rating-col col-sm">
+              <div class="rating-number-border">
+                <b class="rating-number"><%= review.rating.overall %></b>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <p>
+          <%= review.content.substring(0,100) + "..." %>
+        <a href="/reviews/<%= review._id%> ">Read More</a>
+        </p>
+        <hr>
+
+  <%  }) %>
+
+
+</div>
+
+
+<%- include("partials/footer"); %>

@@ -1,0 +1,27 @@
+<%- include("partials/header"); %>
+<div class="container-fluid">
+  <h1>Compose</h1>
+  <form class="input-form" action="/compose" method="POST" autocomplete="off">
+    <div class="form-group">
+      <label>Title</label>
+      <input class="form-control" type="text" name="title" required>
+      <label>Post</label>
+      <textarea class="form-control" name="content" rows="5" cols="30" required ></textarea>
+      <label>Rating</label>
+      <input class="form-control" type="text" name="rating" required  />
+      <label>Location</label>
+      <input class="form-control" type="text" name="location" required  />
+      <label>Date</label>
+      <input class="form-control" type="date" name="date" required  />
+      <label>Course</label>
+      <input class="form-control" type="text" name="courseName" required  />
+      <label>Course URL</label>
+      <input class="form-control" type="text" name="URL" required />
+      <label>Image URL</label>
+      <input class="form-control" type="text" name="imageURL" />
+    </div>
+    <button class="btn btn-primary" type="submit" name="button">Publish</button>
+  </form>
+</div>
+
+<%- include("partials/footer"); %>

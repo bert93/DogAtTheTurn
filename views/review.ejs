@@ -1,0 +1,19 @@
+<%- include("partials/header"); %>
+
+<div class="container-fluid">
+  <h2><%= review.title %></h2>
+  <p><%= course.location %></p>
+<div class="review-img-container">
+    <img src="../<%= review.imageLocation %>" alt="<%=course.name%>" class="review-image" >
+</div>
+  <p class="review-paragraph"><%= review.content %></p>
+
+</div>
+
+<!-- <div class="review-buttons">
+  <button class="btn btn-light" type="button" name="previous">Previous</button>
+  <button class="btn btn-light" type="button" name="next">Next</button>
+</div> -->
+
+
+<%- include("partials/footer"); %>
