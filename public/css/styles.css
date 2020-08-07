@@ -6,7 +6,7 @@
 
 .navbar {
   padding-top: 30px;
-  background-color: #edffea;
+  background-color: #edffea !important;
 }
 
 .navbar-brand {

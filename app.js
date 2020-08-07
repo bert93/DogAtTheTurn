@@ -9,10 +9,15 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static("public"));
 
-mongoose.connect('mongodb://localhost:27017/dattDB', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/dattDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 //create post schema
 
@@ -22,13 +27,13 @@ const postSchema = mongoose.Schema({
   date: Date,
   imageLocation: String,
   rating: {
-      overall: Number,
-      taste: Number,
-      texture: Number,
-      bun: Number,
-      toppings: Number,
-      service: Number
-    },
+    overall: Number,
+    taste: Number,
+    texture: Number,
+    bun: Number,
+    toppings: Number,
+    service: Number
+  },
   course: mongoose.Types.ObjectId
 });
 
@@ -58,7 +63,7 @@ app.get("/", function(req, res) {
 });
 
 //get about page
-app.get("/about", function(req, res){
+app.get("/about", function(req, res) {
   res.render("about", {
     title: "About | Dog At The Turn"
   });
@@ -67,10 +72,9 @@ app.get("/about", function(req, res){
 //get courses page
 app.get("/courses", function(req, res) {
   Course.find({}, function(err, foundCourses) {
-    if(err) {
+    if (err) {
       console.log("Rendering courses resulted in the following error: " + err);
-    }
-    else{
+    } else {
       res.render("courses", {
         title: "Courses | Dog At The Turn",
         courses: foundCourses
@@ -83,28 +87,33 @@ app.get("/courses", function(req, res) {
 app.get("/reviews", function(req, res) {
 
   Post.find({}, function(err, foundReviews) {
-    if(err) {
-      console.log("Rendering reviews resulted in the following error: " + err);
-    }
-    else {
-      res.render("reviews", {
-        title: "Reviews | Dog At The Turn",
-        reviews: foundReviews
-      });
-    }
-  })
-  .sort({date: -1});
+      if (err) {
+        console.log("Rendering reviews resulted in the following error: " + err);
+      } else {
+        res.render("reviews", {
+          title: "Reviews | Dog At The Turn",
+          reviews: foundReviews
+        });
+      }
+    })
+    .sort({
+      date: -1
+    });
 });
 
 //get a specific review
 app.get("/reviews/:postId", function(req, res) {
   const requestedPostId = req.params.postId;
 
-  Post.findOne({_id: requestedPostId}, function(err, foundPost) {
-    if(!err) {
-      if(foundPost) {
+  Post.findOne({
+    _id: requestedPostId
+  }, function(err, foundPost) {
+    if (!err) {
+      if (foundPost) {
 
-        Course.findOne({_id: foundPost.course}, function(err, foundCourse) {
+        Course.findOne({
+          _id: foundPost.course
+        }, function(err, foundCourse) {
 
           res.render("review", {
             title: foundPost.title,
@@ -113,17 +122,38 @@ app.get("/reviews/:postId", function(req, res) {
           });
         });
 
-      }
-      else {
+      } else {
         res.render("404", {
           title: "Error | Dog At The Turn"
         });
       }
-    }
-    else {
+    } else {
       res.send(err);
     }
   });
+});
+
+// Search reviews by search string. If none are found, redirect to the reviews page
+app.post("/search", function(req, res) {
+
+  const searchText = req.body.searchText;
+  Post.findOne({
+    title: new RegExp(searchText, "i")
+  }, function(err, foundPost) {
+    if (!err) {
+      if (foundPost) {
+        res.redirect("/reviews/" + foundPost._id);
+      } else {
+        res.redirect("/reviews");
+      }
+    } else {
+      console.log("Searching caused the following error: " + err);
+      res.redirect("/");
+    }
+  });
+
+
+
 });
 
 //render the compose page where reviews are written
@@ -136,7 +166,7 @@ app.get("/compose", function(req, res) {
 //create a new review and course and save it to the database
 app.post("/compose", function(req, res) {
 
-  const newPost = new Post( {
+  const newPost = new Post({
     title: req.body.title,
     content: req.body.content,
     date: req.body.date,
@@ -155,13 +185,13 @@ app.post("/compose", function(req, res) {
   });
 
   newPost.save(function(err) {
-    if(err) {
+    if (err) {
       console.log("Saving the new post resulted in the following error: " + err);
     }
   });
 
   newCourse.save(function(err) {
-    if(err) {
+    if (err) {
       console.log("Save the new course resulted in the following error: " + err);
     }
   });
@@ -171,7 +201,7 @@ app.post("/compose", function(req, res) {
 });
 
 //handle invalid routes
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   Post.findOne({}, function(err, foundPost) {
     res.status(404).render("404", {
       post: foundPost,

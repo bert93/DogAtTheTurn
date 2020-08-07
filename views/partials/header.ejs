@@ -1,28 +1,54 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title><%=title%></title>
 
-    <!-- CSS Stylesheets -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/styles.css">
+<head>
+  <meta charset="utf-8">
+  <title>
+    <%=title%>
+  </title>
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Bootstrap Scripts -->
+  <!-- Bootsrap Scripts -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 
-  </head>
+</head>
 
-  <nav class="navbar navbar-expand-md navbar-light">
-    <a class="navbar-brand" href="/">Dog At The Turn</a>
-    <div class="navbar-nav">
-      <a class="nav-item nav-link" href="/reviews">Reviews</a>
-      <a class="nav-item nav-link" href="/courses">Courses</a>
-      <a class="nav-item nav-link" href="/about">About</a>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <a class="navbar-brand" href="/">Dog At The Turn</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    </div>
-
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" href="/reviews">Reviews</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/courses">Courses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/about">About</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0" action="/search" method="POST" autocomplete="off">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search Reviews" name="searchText">
+      <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
 </nav>
 
 
+
+
 <div id="page-container">
-   <div id="content-wrap">
-     <body>
+  <div id="content-wrap">
+
+    <body>
