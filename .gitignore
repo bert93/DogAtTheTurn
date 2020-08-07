@@ -116,4 +116,8 @@ dist
 .pnp.*
 
 #Reviews
-Review/
+Reviews/
+
+#Other files
+.DS_Store
+ideas.txt
