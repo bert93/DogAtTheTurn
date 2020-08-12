@@ -120,8 +120,10 @@ footer {
   font-size: 18px;
 }
 
-.review-buttons {
+.review-btn-container {
   text-align: center;
+  /* padding-bottom: 1rem; */
+  margin-bottom: 1rem;
 
 }
 
@@ -142,4 +144,8 @@ footer {
 
 .about-section {
   font-size: 18px;
+}
+
+.error-container {
+  text-align: center;
 }

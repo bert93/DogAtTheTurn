@@ -52,7 +52,6 @@ const courseSchema = mongoose.Schema({
 
 const Course = mongoose.model("course", courseSchema);
 
-
 ///////RENDER PAGES////////
 
 //get home page
@@ -135,7 +134,7 @@ app.get("/reviews/:postId", function(req, res) {
 
 // Search reviews by search string. If none are found, redirect to the reviews page
 app.post("/search", function(req, res) {
-
+try {
   const searchText = req.body.searchText;
   Post.findOne({
     title: new RegExp(searchText, "i")
@@ -144,13 +143,18 @@ app.post("/search", function(req, res) {
       if (foundPost) {
         res.redirect("/reviews/" + foundPost._id);
       } else {
-        res.redirect("/reviews");
+        res.redirect("/404");
       }
     } else {
       console.log("Searching caused the following error: " + err);
       res.redirect("/");
     }
   });
+  //error typically happens if the user searches with an invalid regular expression (eg **/)
+}catch(e) {
+  res.redirect("/404");
+}
+
 
 
 
@@ -158,57 +162,82 @@ app.post("/search", function(req, res) {
 
 //render the compose page where reviews are written
 app.get("/compose", function(req, res) {
+//only render page if running app as admin
+  if(!process.env.ADMIN_PASSWORD) {
+    res.redirect("/");
+  }
+else {
   res.render("compose", {
     title: "Compose | Dog At The Turn"
   });
+}
 });
 
 //create a new review and course and save it to the database
 app.post("/compose", function(req, res) {
 
-  const newPost = new Post({
-    title: req.body.title,
-    content: req.body.content,
-    date: req.body.date,
-    imageLocation: req.body.imageURL,
-    rating: {
-      overall: req.body.rating
-    },
-    course: new mongoose.Types.ObjectId()
-  });
+    const newPost = new Post({
+      title: req.body.title,
+      content: req.body.content,
+      date: req.body.date,
+      imageLocation: req.body.imageURL,
+      rating: {
+        overall: req.body.rating
+      },
+      course: new mongoose.Types.ObjectId()
+    });
 
-  const newCourse = new Course({
-    _id: newPost.course,
-    name: req.body.courseName,
-    location: req.body.location,
-    url: req.body.URL
-  });
+    const newCourse = new Course({
+      _id: newPost.course,
+      name: req.body.courseName,
+      location: req.body.location,
+      url: req.body.URL
+    });
 
-  newPost.save(function(err) {
-    if (err) {
-      console.log("Saving the new post resulted in the following error: " + err);
-    }
-  });
+    newPost.save(function(err) {
+      if (err) {
+        console.log("Saving the new post resulted in the following error: " + err);
+      }
+    });
 
-  newCourse.save(function(err) {
-    if (err) {
-      console.log("Save the new course resulted in the following error: " + err);
-    }
-  });
+    newCourse.save(function(err) {
+      if (err) {
+        console.log("Save the new course resulted in the following error: " + err);
+      }
+    });
 
-  res.redirect("/");
+    res.redirect("/");
+
 
 });
 
 //handle invalid routes
 app.use(function(req, res, next) {
-  Post.findOne({}, function(err, foundPost) {
-    res.status(404).render("404", {
-      post: foundPost,
-      title: "Error | Dog At The Turn"
-    });
-  });
 
+  //count all posts and generate random number
+  Post.countDocuments({}, function(err, count) {
+    if(!err) {
+      const random = Math.floor(Math.random() * count);
+
+      //skip posts by random number
+      Post.findOne().skip(random).exec(function(err, foundPost) {
+        if(!err) {
+          res.status(404).render("404", {
+            post: foundPost,
+            title: "Error | Dog At The Turn"
+          });
+        }
+        else {
+          console.log("Rendering 404 pager resulted in the following error: " + err);
+        }
+
+      });
+    }
+    else {
+      console.log("Counting documents resulted in the following error: " + err);
+    }
+
+  });
 });
 
 
@@ -216,3 +245,19 @@ app.use(function(req, res, next) {
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
+
+//function to get the next post ID
+// function getNextPost(curId) {
+//
+//   Post.findOne({_id: {$gt: curId}}).sort({_id: 1}).exec(function(err, nextPost){
+//     if(!err){
+//       if(nextPost){
+//         console.log("Id on line 251: " + nextPost._id);
+//         return nextPost._id;
+//       }
+//       else{
+//         return;
+//       }
+//     }
+//   });
+// }

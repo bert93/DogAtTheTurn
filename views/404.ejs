@@ -1,9 +1,8 @@
 <%- include("partials/header"); %>
 
-<div class="container-fluid">
-  <h2>Whoops</h2>
-  <p>The page you're looking for doesn't exist. Check out <a href="/reviews/<%= post._id%> ">a review</a></p>
-
+<div class="container-fluid error-container">
+  <h2 class="error-header">Whoops!</h2>
+  <p>The page you're looking for doesn't exist. Why don't you check out <a href="/reviews/<%= post._id%> ">a review</a></p>
 </div>
 
 <%- include("partials/footer"); %>
