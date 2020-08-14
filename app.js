@@ -1,4 +1,4 @@
-//jshint esversion:6
+//jshint esversion:8
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -117,7 +117,7 @@ app.get("/reviews/:postId", function(req, res) {
           res.render("review", {
             title: foundPost.title,
             review: foundPost,
-            course: foundCourse
+            course: foundCourse,
           });
         });
 
@@ -143,7 +143,10 @@ try {
       if (foundPost) {
         res.redirect("/reviews/" + foundPost._id);
       } else {
-        res.redirect("/404");
+        res.render("noSearchResults", {
+          title: "Dog At The Turn",
+          searchText: searchText
+        });
       }
     } else {
       console.log("Searching caused the following error: " + err);
@@ -245,19 +248,3 @@ app.use(function(req, res, next) {
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
-
-//function to get the next post ID
-// function getNextPost(curId) {
-//
-//   Post.findOne({_id: {$gt: curId}}).sort({_id: 1}).exec(function(err, nextPost){
-//     if(!err){
-//       if(nextPost){
-//         console.log("Id on line 251: " + nextPost._id);
-//         return nextPost._id;
-//       }
-//       else{
-//         return;
-//       }
-//     }
-//   });
-// }
